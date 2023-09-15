@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loctel | Cineto Telecomunicaciones</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet">
+</head>
+
+<body class="">
+
+    <% if (isAuthenticated) { %>
+
+        <div id="wrapper">
+
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav metismenu" id="side-menu">
+                        <li class="nav-header">
+                            <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-rounded" src="img/user.png" />
+                             </span>
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold" style="text-transform: uppercase;"><%= username.nombreUsuario %></strong>
+                             </span> <span class="text-muted text-xs block"><%= username.nombreRol %> <b class="caret"></b></span> </span> </a>
+                                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                    <li><a href="">Perfil</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/logout">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>
+                            <div class="logo-element">
+                                LT+
+                            </div>
+                        </li>
+                        <% if(username.nombreRol === 'Administrador') { %>
+                            <li>
+                                <a href="/adminIndex"><i class="fa fa-area-chart"></i> <span class="nav-label">Inicio</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminEmpresa"><i class="fa fa-bank"></i> <span class="nav-label">Empresa</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminCentral"><i class="fa fa-phone"></i> <span class="nav-label">Central Telefónica</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li><a href="/adminCentral">Modelo Central Telefónica</a></li>
+                                    <li><a href="/adminCentralCampos"> Campos Central Telefónica</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/adminDepartamento"><i class="fa fa-diamond"></i> <span class="nav-label">Departamentos</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminAgentes"><i class="fa fa-headphones"></i> <span class="nav-label">Agentes</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminSeries"><i class="fa fa-sort-numeric-asc"></i> <span class="nav-label">Series Numéricas</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminUsuarios"><i class="fa fa-group"></i> <span class="nav-label">Usuarios</span></a>
+                            </li>
+                            <li class="active">
+                                <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">CRM</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <!--<li><a href="/adminCrmCreacionCampos"> Campos</a></li>-->
+                                    <li><a href="/adminCrmInformacion"> Información</a></li>
+                                    <li class="active"><a href="/adminCrmAsignacion"> Asignación</a></li>
+                                    <li><a href="/adminCrmConsultas"> Consultas</a></li>
+                                    <li>
+                                        <a href="/adminCrmUsuarios"> Usuarios</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-eye"></i>
+                                    <span class="nav-label">Administración</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="nav nav-second-level">
+                                    <li >
+                                       <a href="/adminAuditoria"> Auditoría</a>
+                                    </li>
+                                    <li>
+                                        <a href="/adminErrores"> Log Errores</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <% } %>
+
+                                <% if(username.nombreRol === 'Consultor') { %>
+                                    <li class="active">
+                                        <a href="/adminIndex"><i class="fa fa-area-chart"></i> <span class="nav-label">Inicio</span></a>
+                                    </li>
+                                    <% } %>
+                    </ul>
+
+                </div>
+            </nav>
+
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li>
+                                <span class="m-r-sm text-muted welcome-message" style="text-transform: uppercase; font-weight: bold;"><%= username.nombreUsuario %> Bienvenido a Loctel</span>
+                            </li>
+                            <li>
+                                <a href="/logout"><i class="fa fa-sign-out"></i> Cerrar Sesión</a>
+                            </li>
+                        </ul>
+
+                    </nav>
+                </div>
+
+                <% if(username.nombreRol === 'Administrador') { %>
+                    <div class="row wrapper border-bottom white-bg page-heading">
+                        <div class="col-sm-4">
+                            <h2>Asignación Llamadas</h2>
+                            <ol class="breadcrumb">
+                                <li>
+                                    <a>Administrador</a>
+                                </li>
+                                <li class="active">
+                                    <strong>Asignación Llamadas</strong>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="wrapper wrapper-content animated fadeInRight">
+                        <label>Asignar las extensiones al archivo que contiene las llamadas telefónicas</label>
+                        <div class="row">
+
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Ingresar Parámetros</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <label>Marca Central Telefónica: &nbsp;&nbsp;&nbsp;</label>
+                                                <select id="cbxMarca" class="form-control">
+                                                        </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Modelo Telefónica: &nbsp;&nbsp;&nbsp;</label>
+                                                <select id="cbxModelo" class="form-control">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div id='mensaje_total'>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Extensiones Existentes</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div id="div2" class="table-responsive">
+                                            <table id="tbAgentes" class="table table-striped table-bordered table-hover" style="width: 100%">
+                                                <tbody id="tbBodyAgentes"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-8">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Archivo Llamadas Telefónicas</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="form-group">
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <span class="btn btn-default btn-file"><span class="fileinput-new">Seleccionar CSV</span>
+                                                <span class="fileinput-exists">Cambiar</span><input type="file" name="files"
+                                                    id="files" /></span>
+                                                <span class="fileinput-filename" id="fileinput-filenames"></span>
+                                                <a href="#" id="quitarCsv" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                            </div>
+
+                                        </div>
+                                        <div id="div1" class="table-responsive">
+                                            <table id='tbCSV' class='table table-striped table-bordered table-hover'>
+                                                <tbody id="parsed_csv_list"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Acciones</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <button type="submit" class="btn btn-warning" id="ver">ASIGNAR</button>
+                                        <button type="submit" class="btn btn-primary" id="query">GUARDAR</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <% } else{%>
+
+                        <div class="row wrapper border-bottom white-bg page-heading">
+                            <div class="col-sm-9">
+                                <h2 style="font-weight: bold">No tienes permiso para ingresar a el siguiente módulo</h2>
+                            </div>
+                        </div>
+
+                        <% }%>
+            </div>
+        </div>
+
+        <!-- Mainly scripts -->
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+        <!-- Custom and plugin javascript -->
+        <script src="js/inspinia.js"></script>
+        <script src="js/plugins/pace/pace.min.js"></script>
+        <script src="js/plugins/toastr/toastr.min.js"></script>
+        <script src="js/papaparse.min.js"></script>
+        <script src="js/plugins/dataTables/datatables.min.js"></script>
+        <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
+        <!-- CodeMirror -->
+        <script src="js/plugins/codemirror/codemirror.js"></script>
+        <script src="js/plugins/codemirror/mode/xml/xml.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                BuscarMarca();
+
+                setTimeout(function () { var marca = $('#cbxMarca').val(); BuscarModelo(marca); }, 1000);
+                setTimeout(function () { var modelo = $('#cbxModelo').val(); BuscarAgentes(modelo); }, 2000);
+
+                $('#div1').slimscroll({
+                    height: '300px',
+                    width: '100%',
+                    axis: 'both'
+                });
+
+                $('#div2').slimscroll({
+                    height: '363px',
+                    width: '100%',
+                    axis: 'both'
+                });
+            });
+
+            $('#cbxMarca').click(function (event) {
+                var marca = $('#cbxMarca').val();
+                $('#tbBodyAgentes').empty();
+                BuscarModelo(marca);
+            });
+
+            $('#cbxModelo').click(function (event) {
+                var modelo = $('#cbxModelo').val();
+                BuscarAgentes(modelo);
+            });
+
+            $('#ver').click(function (event) {
+
+                if ($('#tbBodyAgentes').html() == "" || $('#parsed_csv_list').html() == "") {
+                    toastr.error('Seleccionar extensiones y/o abrir un archivo .csv de llamadas.');
+                } else {
+                    ObtenerCalculos();
+                }
+            });
+
+            $('#query').click(function (event) {
+
+                //Cambiar en caso de mas campos el == 9
+                var nColumnas = $("#tbCSV tr:last td").length;
+
+                if ($('#tbBodyAgentes').html() == "" || $('#parsed_csv_list').html() == "" || $('#files').val() == "" || nColumnas == 9) {
+                    toastr.error('Seleccionar extensiones y/o abrir un archivo .csv de llamadas.');
+                } else {
+
+                    var concat = '';
+                    $("#tbCSV tbody tr").each(function (index) {
+                        //Cambiar en caso de mas campos
+                        var campo1 = '', campo2 = '', campo3 = '', campo4 = '', campo5 = '', campo6 = '', campo7 = '', campo8 = '', campo9 = '', campo10 = '';
+                        $(this).children("td").each(function (index2) {
+                            switch (index2) {
+                                case 0:
+                                    campo1 += $(this).text();
+                                    break;
+                                case 1:
+                                    campo2 += $(this).text();
+                                    break;
+                                case 2:
+                                    campo3 += $(this).text();
+                                    break;
+                                case 3:
+                                    campo4 += $(this).text();
+                                    break;
+                                case 4:
+                                    campo5 += $(this).text();
+                                    break;
+                                case 5:
+                                    campo6 += $(this).text();
+                                    break;
+                                case 6:
+                                    campo7 += $(this).text();
+                                    break;
+                                case 7:
+                                    campo8 += $(this).text();
+                                    break;
+                                case 8:
+                                    campo9 += $(this).text();
+                                    break;
+                                case 9:
+                                    campo10 += $(this).text();
+                                    break;
+                            }
+                        })
+                        //Cambiar en caso de mas campos
+                        concat += "(\"" + campo1 + "\" ,\"" + campo2 + "\" ,\"" + campo3 + "\" ,\"" + campo4 + "\" ,\"" + campo5 + "\" ,\"" + campo6 + "\" ,\"" + campo7 + "\" ,\"" + campo8 + "\" ,\"" + campo9 + "\" ,\"" + campo10 + "\" ),\n";
+                    })
+
+                    var archivo = $('#files').val();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/GuardarArchivoCrmAsignacion",
+                        data: { archivo: archivo },
+                        success: function (responseText) {
+
+                            if (responseText[0].msm != 0) {
+                                var valores = concat.substring(0, (concat.length - 2));
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/GuardarCrmAsignacion",
+                                    data: { valores: valores },
+                                    success: function (responseText) {
+                                        toastr.success(responseText, 'Archivo Asignado y guardado exitosamente.');
+                                        setTimeout(function () { $('#tbBodyAgentes').empty(); $('#parsed_csv_list').empty(); $('#files').val(""); }, 2000);
+                                    }
+                                });
+                            } else {
+                                toastr.error('El archivo que intenta guardar ya existe y esta asignado.');
+                                setTimeout(function () { $('#tbBodyAgentes').empty(); $('#parsed_csv_list').empty(); $('#files').val(""); }, 2000);
+                            }
+
+                        }
+                    });
+
+                }
+
+            });
+
+            $('#quitarCsv').click(function (event) {
+                $('#parsed_csv_list').empty();
+            });
+
+            function ObtenerCalculos() {
+
+                var numeroAgentes = $("#tbAgentes tr").length;
+                var numeroLlamadas = $("#tbCSV tr").length;
+
+                var total = (numeroLlamadas - 1) / numeroAgentes;
+                var sobrante = (numeroLlamadas - 1) - (numeroAgentes * Math.trunc(total));
+
+                var idAgentes = new Array();
+                var codigos = new Array();
+                codigos.push("0");
+                $('#tbAgentes tr').each(function () {
+                    idAgentes.push($(this).find("td").eq(0).html());
+                });
+
+                var htmlAux = "";
+                for (var h = 0; h < Math.trunc(total); h++) {
+                    for (var i = 0; i < idAgentes.length; i++) {
+                        htmlAux += "" + idAgentes[i] + "\n";
+                        codigos.push(idAgentes[i]);
+                    }
+                }
+
+                var html = "";
+                for (var j = 0; j < sobrante; j++) {
+                    aleatorio = Math.floor(Math.random() * (idAgentes.length));
+                    seleccion = idAgentes[aleatorio];
+                    html += "" + seleccion + "\n";
+                    codigos.push(seleccion);
+                }
+
+                //console.log("Código\n" + htmlAux + html);
+
+                var tblBodyObj = document.getElementById('tbCSV').tBodies[0];
+                for (var i = 0; i < tblBodyObj.rows.length; i++) {
+                    var newCell = tblBodyObj.rows[i].insertCell(-1);
+                    newCell.innerHTML = '' + codigos[i];
+                }
+                //console.log(codigos);
+
+                $('#mensaje_total').empty();
+                $('#mensaje_total').append('<div class="alert alert-info alert-dismissable"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>' + 'Número de agentes: '
+                    + (numeroAgentes)
+                    + ' -    Número llamadas: '
+                    + (numeroLlamadas - 1)
+                    + '. Se asignarán un total de '
+                    + Math.trunc(total)
+                    + ' llamadas por agente,'
+                    + ' sobrando ' + sobrante + ', asignados aleatoriamente entre los agentes.' + '</div>'
+                );
+
+                window.setTimeout(function () {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                        $(this).remove();
+                    });
+                }, 10000);
+
+            }
+
+            $('#files').on("change", function (e) {
+                e.preventDefault();
+                $('#files').parse({
+                    config: {
+                        complete: displayHTMLTable,
+                        encoding: "ISO-8859-1"
+                    },
+                    before: function (file, inputElem) {
+                        //console.log("Parsing file...", file);
+                    },
+                    error: function (err, file) {
+                        console.log("ERROR:", err, file);
+                    },
+                    complete: function () {
+                        //console.log("Done with all files");
+                    }
+                });
+            });
+
+            function displayHTMLTable(results) {
+                var table = "";
+                var data = results.data;
+
+                for (i = 0; i < data.length; i++) {
+                    table += "<tr id='id_" + i + "'>";
+                    var row = data[i];
+                    var cells = row.join(";").split(";");
+
+                    for (j = 0; j < cells.length; j++) {
+                        table += "<td width='100'>";
+                        table += cells[j];
+                        table += "</td>";
+                    }
+                    table += "</tr>";
+                }
+                $('#parsed_csv_list').empty();
+                $('#parsed_csv_list').append(table);
+
+            }
+
+            function BuscarMarca() {
+                $.ajax({
+                    type: "GET",
+                    url: "/BuscarMarcaCentralCrmAsignacion",
+                    success: function (responseText) {
+
+                        var htmlOut = '';
+                        for (var i = 0; i < responseText.length; i++) {
+                            htmlOut += '<option value="' + responseText[i].mar_id + '">' + responseText[i].mar_nombre + '</option>\n';
+                        }
+                        $('#cbxMarca').empty();
+                        $('#cbxMarca').html(htmlOut);
+
+                    }
+                });
+            }
+
+            function BuscarModelo(marca) {
+                $.ajax({
+                    type: "GET",
+                    url: "/BuscarModeloCentralCrmAsignacion",
+                    data: { marca: marca },
+                    success: function (responseText) {
+
+                        var htmlOut = '';
+                        for (var i = 0; i < responseText.length; i++) {
+                            htmlOut += '<option value="' + responseText[i].cen_id + '">' + responseText[i].cen_nombre + '</option>\n';
+                        }
+                        $('#cbxModelo').empty();
+                        $('#cbxModelo').html(htmlOut);
+
+                    }
+                });
+            }
+
+            function BuscarAgentes(modelo) {
+                $.ajax({
+                    type: "GET",
+                    url: "/BuscarAgentesCrmAsignacion",
+                    data: { modelo: modelo },
+                    success: function (responseText) {
+
+                        var htmlOut = '';
+                        for (var i = 0; i < responseText.length; i++) {
+                            htmlOut += '<tr> <td>' + responseText[i].ext_id + '</td> <td>' + responseText[i].ext_nombre + '</td> <td>' + responseText[i].ext_numero + '</td> </tr>';
+                        }
+                        $('#tbBodyAgentes').empty();
+                        $('#tbBodyAgentes').html(htmlOut);
+
+                    }
+                });
+            }
+        </script>
+        <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+        <script src="js/timeOut/timeOut.js"></script>
+        <%  } else{ %>
+            <script>
+                location.replace('/inicio');
+            </script>
+            <% } %>
+
+</body>
+
+</html>

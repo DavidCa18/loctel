@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loctel | Cineto Telecomunicaciones</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/bootstrapTour/bootstrap-tour.min.css" rel="stylesheet">
+    <link href="css/plugins/slick/slick.css" rel="stylesheet">
+    <link href="css/plugins/slick/slick-theme.css" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="">
+
+    <% if (isAuthenticated) { %>
+
+        <div id="wrapper">
+
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav metismenu" id="side-menu">
+                        <li class="nav-header">
+                            <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-rounded" src="img/user.png" />
+                             </span>
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold" style="text-transform: uppercase;"><%= username.nombreUsuario %></strong>
+                             </span> <span class="text-muted text-xs block"><%= username.nombreRol %> <b class="caret"></b></span> </span> </a>
+                                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                    <li><a href="">Perfil</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/logout">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>
+                            <div class="logo-element">
+                                LT+
+                            </div>
+                        </li>
+                        <% if(username.nombreRol === 'Administrador') { %>
+                            <li>
+                                <a href="/adminIndex"><i class="fa fa-area-chart"></i> <span class="nav-label">Inicio</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminEmpresa"><i class="fa fa-bank"></i> <span class="nav-label">Empresa</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminCentral"><i class="fa fa-phone"></i> <span class="nav-label">Central Telefónica</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li><a href="/adminCentral">Modelo Central Telefónica</a></li>
+                                    <li><a href="/adminCentralCampos"> Campos Central Telefónica</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/adminDepartamento"><i class="fa fa-diamond"></i> <span class="nav-label">Departamentos</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminAgentes"><i class="fa fa-headphones"></i> <span class="nav-label">Agentes</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminSeries"><i class="fa fa-sort-numeric-asc"></i> <span class="nav-label">Series Numéricas</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminUsuarios"><i class="fa fa-group"></i> <span class="nav-label">Usuarios</span></a>
+                            </li>
+
+                            <li class="active">
+                                <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">CRM</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <!--<li><a href="/adminCrmCreacionCampos"> Campos</a></li>-->
+                                    <li class="active"><a href="/adminCrmInformacion"> Información</a></li>
+                                    <li><a href="/adminCrmAsignacion"> Asignación</a></li>
+                                    <li><a href="/adminCrmConsultas"> Consultas</a></li>
+                                    <li>
+                                        <a href="/adminCrmUsuarios"> Usuarios</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-eye"></i>
+                                    <span class="nav-label">Administración</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="nav nav-second-level">
+                                    <li >
+                                       <a href="/adminAuditoria"> Auditoría</a>
+                                    </li>
+                                    <li>
+                                        <a href="/adminErrores"> Log Errores</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <% } %>
+
+                                <% if(username.nombreRol === 'Consultor') { %>
+                                    <li class="active">
+                                        <a href="/adminIndex"><i class="fa fa-area-chart"></i> <span class="nav-label">Dashboard</span></a>
+                                    </li>
+                                    <% } %>
+                    </ul>
+
+                </div>
+            </nav>
+
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                            <div role="search" class="navbar-form-custom">
+                                <div class="form-group">
+                                    <input type="text" value="<%= username.nombreCentral %>" class="form-control" name="top-search" id="top-search" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li>
+                                <span class="m-r-sm text-muted welcome-message" style="text-transform: uppercase; font-weight: bold;"><%= username.nombreUsuario %> Bienvenido a Loctel</span>
+                            </li>
+                            <li>
+                                <a href="/logout"><i class="fa fa-sign-out"></i> Cerrar Sesión</a>
+                            </li>
+                        </ul>
+
+                    </nav>
+                </div>
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <div class="col-sm-4">
+                        <h2>Información CRM</h2>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a>Administrador</a>
+                            </li>
+                            <li class="active">
+                                <strong>Información CRM</strong>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="wrapper wrapper-content  animated fadeInRight">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="ibox ">
+                                <div class="ibox-title">
+                                    <h5>Iniciar - Información CRM</h5>
+                                </div>
+
+                                <div class="ibox-content">
+                                    <p>
+                                        Presionar para comenzar con la Explicación.
+                                    </p>
+
+                                    <div class=" m-t-sm">
+
+                                        <a href="#" class="btn btn-primary startTour"><i class="fa fa-play"></i> Iniciar Explicación</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="ibox ">
+                                <div class="ibox-title">
+                                    <h5>1. Información</h5>
+                                </div>
+                                <div class="ibox-content" id="step1">
+                                    <p style="text-align: justify">El siguiente módulo es un CRM dedicado para clientes de CALL CENTER, que ayudará a la
+                                        gestión de asignación de llamadas equitativamente entre los agentes para acontinuación
+                                        proceder con la realización de llamadas. </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="ibox ">
+                                <div class="ibox-title">
+                                    <h5>2. Campos Definidos</h5>
+                                </div>
+                                <div class="ibox-content" id="step2">
+                                    <div class="p-sm">
+                                        <div class="slick_demo_1">
+                                            <div>
+                                                <div class="">
+                                                    <div class="dd-handle">
+                                                        <span class="label label-info"><i class="fa fa-users"></i></span>                                                        1. Apellidos
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="">
+                                                    <div class="dd-handle">
+                                                        <span class="label label-info"><i class="fa fa-users"></i></span>                                                        2. Nombres
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="">
+                                                    <div class="dd-handle">
+                                                        <span class="label label-info"><i class="fa fa-users"></i></span>                                                        3. Dirección
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="">
+                                                    <div class="dd-handle">
+                                                        <span class="label label-info"><i class="fa fa-users"></i></span>                                                        4. Población
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="">
+                                                    <div class="dd-handle">
+                                                        <span class="label label-info"><i class="fa fa-users"></i></span>                                                        5. Teléfono
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="">
+                                                    <div class="dd-handle">
+                                                        <span class="label label-info"><i class="fa fa-users"></i></span>                                                        6. Correo Electrónico
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="">
+                                                    <div class="dd-handle">
+                                                        <span class="label label-info"><i class="fa fa-users"></i></span>                                                        7. Deuda
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="">
+                                                    <div class="dd-handle">
+                                                        <span class="label label-info"><i class="fa fa-users"></i></span>                                                        8. Género
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="">
+                                                    <div class="dd-handle">
+                                                        <span class="label label-info"><i class="fa fa-users"></i></span>                                                        9. Ingresos Mensuales
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="ibox ">
+                                <div class="ibox-title">
+                                    <h5>3. Tipo de Documento</h5>
+                                </div>
+                                <div class="ibox-content" id="step3">
+                                    <div class="p-sm">
+                                        <p style="text-align: justify">El tipo de documento soportado para la asignación de llamadas a los agentes es un
+                                            <b>.CSV</b> delimitado por <b>punto y coma (;)</b>.</p>
+                                        <p style="text-align: justify">El documento no deberá contener los siguientes signos <b>( comillas simples y comillas dobles ) ( ´ ' " ) </b>.
+                                            </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="ibox ">
+                                <div class="ibox-title">
+                                    <h5>4. Formato del Documento</h5>
+                                </div>
+                                <div class="ibox-content" id="step4">
+                                    <div class="p-sm">
+                                        <p style="text-align: justify">El documento deberá tener las columnas en el mismo orden en el que se presentan en
+                                            la base de datos ( visualizar orden y nombre de los campos en el paso 2 - <b>Campos Definidos</b>                                            ).</p>
+                                        <p>&nbsp</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="ibox ">
+                                <div class="ibox-title">
+                                    <h5>Proceso de Asignación y Guardado</h5>
+                                </div>
+                                <div class="ibox-content" id="step5">
+                                    <div class="p-sm">
+                                        <p>Para empezar con la realización de asignación y guardado se deben seguir los siguentes
+                                            pasos:</p>
+                                        <p>
+                                            <ul>
+                                                <li>Completar los datos de los anteriores módulos pertenecientes a <b>LOCTEL</b>.</li>
+                                                <li>Selecionar la marca de la central telefónica.</li>
+                                                <li>Selecionar el modelo de la central telefónica.</li>
+                                                De esta manera se cargarán los agentes existentes en la central telefónica.
+                                                <li>Abrir y cargar un archivo <b>.csv</b>.</li>
+                                                <li>Presionar el botón <b>Asignar</b> para repartir las llamadas equitativamente
+                                                    entre los agentes.</li>
+                                                <li>Presionar el botón <b>Guardar</b> para almacenar las llamadas ya asignadas
+                                                    a los agentes.</li>
+                                            </ul>
+                                        </p>
+                                        <h4>NOTA:</h4>
+                                        <p>Si se intenta subir un archivo procesado anteriormente no se podra asignar los agentes ni guardar las llamadas.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mainly scripts -->
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+        <!-- Custom and plugin javascript -->
+        <script src="js/inspinia.js"></script>
+        <script src="js/plugins/pace/pace.min.js"></script>
+
+        <script src="js/plugins/bootstrapTour/bootstrap-tour.min.js"></script>
+        <script src="js/plugins/slick/slick.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('.slick_demo_1').slick({
+                    dots: true
+                });
+
+                // Instance the tour
+                var tour = new Tour({
+                    steps: [
+                        {
+                            element: "#step1",
+                            title: "Información",
+                            content: "",
+                            placement: "top",
+                            backdrop: true,
+                            backdropContainer: '#wrapper',
+                            onShown: function (tour) {
+                                $('body').addClass('tour-open')
+                            },
+                            onHidden: function (tour) {
+                                $('body').removeClass('tour-close')
+                            }
+                        },
+                        {
+                            element: "#step2",
+                            title: "Campos definidos",
+                            content: "Los campos definidos para la subida de archivos de llamadas son los siguientes.",
+                            placement: "top",
+                            backdrop: true,
+                            backdropContainer: '#wrapper',
+                            onShown: function (tour) {
+                                $('body').addClass('tour-open')
+                            },
+                            onHidden: function (tour) {
+                                $('body').removeClass('tour-close')
+                            }
+                        },
+                        {
+                            element: "#step3",
+                            title: "Tipo Documento",
+                            content: "Tipo del documento de llamadas.",
+                            placement: "top",
+                            backdrop: true,
+                            backdropContainer: '#wrapper',
+                            onShown: function (tour) {
+                                $('body').addClass('tour-open')
+                            },
+                            onHidden: function (tour) {
+                                $('body').removeClass('tour-close')
+                            }
+                        },
+                        {
+                            element: "#step4",
+                            title: "Formato Documento",
+                            content: "Orden de los campos en el archivo <b>.csv</b>",
+                            placement: "top",
+                            backdrop: true,
+                            backdropContainer: '#wrapper',
+                            onShown: function (tour) {
+                                $('body').addClass('tour-open')
+                            },
+                            onHidden: function (tour) {
+                                $('body').removeClass('tour-close')
+                            }
+                        },
+                        {
+                            element: "#step5",
+                            title: "Proceso Asignación - Guardado",
+                            content: "Pasos a seguir para asignar agentes y guardar las llamadas",
+                            placement: "top",
+                            backdrop: true,
+                            backdropContainer: '#wrapper',
+                            onShown: function (tour) {
+                                $('body').addClass('tour-open')
+                            },
+                            onHidden: function (tour) {
+                                $('body').removeClass('tour-close')
+                            }
+                        },
+                    ]
+                });
+
+                // Initialize the tour
+                //tour.init();
+
+                $('.startTour').click(function () {
+                    tour.restart();
+
+                    // Start the tour
+                    // tour.start();
+                })
+
+            });
+        </script>
+
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+<script src="js/timeOut/timeOut.js"></script>
+        <%  } else{ %>
+            <script>
+                location.replace('/inicio');
+            </script>
+            <% } %>
+
+</body>
+
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loctel | Cineto Telecomunicaciones</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">    
+    <link href="css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="">
+
+    <% if (isAuthenticated) { %>
+
+        <div id="wrapper">
+
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav metismenu" id="side-menu">
+                        <li class="nav-header">
+                            <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-rounded" src="img/user.png" />
+                             </span>
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold" style="text-transform: uppercase;"><%= username.nombreUsuario %></strong>
+                             </span> <span class="text-muted text-xs block"><%= username.nombreRol %> <b class="caret"></b></span> </span> </a>
+                                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                    <li><a href="">Perfil</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/logout">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>
+                            <div class="logo-element">
+                                LT+
+                            </div>
+                        </li>
+                        <% if(username.nombreRol === 'Administrador') { %>
+                            <li>
+                                <a href="/adminIndex"><i class="fa fa-area-chart"></i> <span class="nav-label">Inicio</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminEmpresa"><i class="fa fa-bank"></i> <span class="nav-label">Empresa</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminCentral"><i class="fa fa-phone"></i> <span class="nav-label">Central Telefónica</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li><a href="/adminCentral">Modelo Central Telefónica</a></li>
+                                    <li><a href="/adminCentralCampos"> Campos Central Telefónica</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/adminDepartamento"><i class="fa fa-diamond"></i> <span class="nav-label">Departamentos</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminAgentes"><i class="fa fa-headphones"></i> <span class="nav-label">Agentes</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminSeries"><i class="fa fa-sort-numeric-asc"></i> <span class="nav-label">Series Numéricas</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminUsuarios"><i class="fa fa-group"></i> <span class="nav-label">Usuarios</span></a>
+                            </li>
+
+                            <li class="active">
+                                <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">CRM</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <!--<li><a href="/adminCrmCreacionCampos"> Campos</a></li>-->
+                                    <li><a href="/adminCrmInformacion"> Información</a></li>
+                                    <li><a href="/adminCrmAsignacion"> Asignación</a></li>
+                                    <li><a href="/adminCrmConsultas"> Consultas</a></li>
+                                    <li class="active"><a href="/adminCrmUsuarios"> Usuarios</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-eye"></i>
+                                    <span class="nav-label">Administración</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="nav nav-second-level">
+                                    <li >
+                                       <a href="/adminAuditoria"> Auditoría</a>
+                                    </li>
+                                    <li>
+                                        <a href="/adminErrores"> Log Errores</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <% } %>
+
+                                <% if(username.nombreRol === 'Consultor') { %>
+                                    <li class="active">
+                                        <a href="/adminIndex"><i class="fa fa-area-chart"></i> <span class="nav-label">Dashboard</span></a>
+                                    </li>
+                                    <% } %>
+                    </ul>
+
+                </div>
+            </nav>
+
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                            <div role="search" class="navbar-form-custom">
+                                <div class="form-group">
+                                    <input type="text" value="<%= username.nombreCentral %>" class="form-control" name="top-search" id="top-search" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li>
+                                <span class="m-r-sm text-muted welcome-message" style="text-transform: uppercase; font-weight: bold;"><%= username.nombreUsuario %> Bienvenido a Loctel</span>
+                            </li>
+                            <li>
+                                <a href="/logout"><i class="fa fa-sign-out"></i> Cerrar Sesión</a>
+                            </li>
+                        </ul>
+
+                    </nav>
+                </div>
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <div class="col-sm-4">
+                        <h2>Asignación Usuarios CRM</h2>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a>Administrador</a>
+                            </li>
+                            <li class="active">
+                                <strong>Asignación Usuarios CRM</strong>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="wrapper wrapper-content  animated fadeInRight">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Asignación de Usuarios a las Extensiones/Agentes Existentes</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="form-group">
+                                        <label>Seleccionar Usuario</label>
+                                        <select class="form-control m-b" id="cbxUsuarios" name="cbxUsuarios" style="height: 34px"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Seleccionar Extensión</label>
+                                        <select class="form-control m-b" id="cbxExtensiones" name="cbxExtensiones" style="height: 34px"></select>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" type="button" id="btnAsignar" style="width: 100%"><i class="fa fa-save"></i> ASIGNAR USUARIO A LA EXTENSIÓN</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mainly scripts -->
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+        <!-- Custom and plugin javascript -->
+        <script src="js/inspinia.js"></script>
+        <script src="js/plugins/pace/pace.min.js"></script>
+        <script src="js/bootstrap-multiselect.js" type="text/javascript"></script>
+        <script src="js/plugins/toastr/toastr.min.js"></script>
+
+        <script>
+            BuscarExtensiones();
+            BuscarUsuarios();
+
+            $('#btnAsignar').click(function (event) {
+                GuardarAsignacionUsuarios($('#cbxUsuarios').val(), $('#cbxExtensiones').val());
+            });
+
+            function GuardarAsignacionUsuarios(usuario, extension) {
+                $.ajax({
+                    type: "POST",
+                    url: "/GuardarAsignacionCrmUsuarios",
+                    data: { usuario: usuario, extension: extension },
+                    success: function (responseText) {
+                        toastr.success(responseText, 'Gestión Asignación Usuarios - Extensión');
+                    }
+                });
+            }
+
+            function BuscarExtensiones() {
+                $.ajax({
+                    type: "GET",
+                    url: "/BuscarExtensionesCrmUsuarios",
+                    success: function (responseText) {
+                        var htmlOut = '';
+                        for (var i = 0; i < responseText.length; i++) {
+                            htmlOut += "<option value='" + responseText[i].ext_id + "'>" + responseText[i].ext_nombre + "  " + responseText[i].ext_numero + "</option>\n";
+                        }
+
+                        $('#cbxExtensiones').empty();
+                        $('#cbxExtensiones').append(htmlOut);
+
+                        $('#cbxExtensiones').multiselect('destroy');
+                        $('#cbxExtensiones').multiselect({
+                            includeSelectAllOption: true,
+                            enableFiltering: true,
+                            buttonWidth: '100%',
+                            maxHeight: 200
+                        });
+                    }
+                });
+            }
+
+            function BuscarUsuarios() {
+                $.ajax({
+                    type: "GET",
+                    url: "/BuscarUsuariosCrmUsuarios",
+                    success: function (responseText) {
+                        var htmlOut = '';
+                        for (var i = 0; i < responseText.length; i++) {
+                            htmlOut += "<option value='" + responseText[i].usu_id + "'>" + responseText[i].usu_nombre + "</option>\n";
+                        }
+
+                        $('#cbxUsuarios').empty();
+                        $('#cbxUsuarios').append(htmlOut);
+
+                        $('#cbxUsuarios').multiselect('destroy');
+                        $('#cbxUsuarios').multiselect({
+                            includeSelectAllOption: true,
+                            enableFiltering: true,
+                            buttonWidth: '100%',
+                            maxHeight: 200
+                        });
+                    }
+                });
+            }
+        </script>
+
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+<script src="js/timeOut/timeOut.js"></script>
+        <%  } else{ %>
+            <script>
+                location.replace('/inicio');
+            </script>
+            <% } %>
+
+</body>
+
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loctel | Cineto Telecomunicaciones</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet">
+    <link href="css/plugins/ladda/ladda-themeless.min.css" rel="stylesheet">
+
+</head>
+
+<body class="">
+
+    <% if (isAuthenticated) { %>
+
+        <div id="wrapper">
+
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav metismenu" id="side-menu">
+                        <li class="nav-header">
+                            <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-rounded" src="img/user.png" />
+                             </span>
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold" style="text-transform: uppercase;"><%= username.nombreUsuario %></strong>
+                             </span> <span class="text-muted text-xs block"><%= username.nombreRol %> <b class="caret"></b></span> </span> </a>
+                                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                    <li><a href="">Perfil</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/logout">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>
+                            <div class="logo-element">
+                                LT+
+                            </div>
+                        </li>
+                        <% if(username.nombreRol === 'Administrador') { %>
+                            <li>
+                                <a href="/adminIndex"><i class="fa fa-area-chart"></i> <span class="nav-label">Inicio</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminEmpresa"><i class="fa fa-bank"></i> <span class="nav-label">Empresa</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminCentral"><i class="fa fa-phone"></i> <span class="nav-label">Central Telefónica</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li><a href="/adminCentral">Modelo Central Telefónica</a></li>
+                                    <li><a href="/adminCentralCampos"> Campos Central Telefónica</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/adminDepartamento"><i class="fa fa-diamond"></i> <span class="nav-label">Departamentos</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminAgentes"><i class="fa fa-headphones"></i> <span class="nav-label">Agentes</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminSeries"><i class="fa fa-sort-numeric-asc"></i> <span class="nav-label">Series Numéricas</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminUsuarios"><i class="fa fa-group"></i> <span class="nav-label">Usuarios</span></a>
+                            </li>
+
+                            <li class="active">
+                                <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">CRM</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <!--<li><a href="/adminCrmCreacionCampos"> Campos</a></li>-->
+                                    <li><a href="/adminCrmInformacion"> Información</a></li>
+                                    <li><a href="/adminCrmAsignacion"> Asignación</a></li>
+                                    <li class="active"><a href="/adminCrmConsultas"> Consultas</a></li>
+                                    <li>
+                                        <a href="/adminCrmUsuarios"> Usuarios</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-eye"></i>
+                                    <span class="nav-label">Administración</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="nav nav-second-level">
+                                    <li >
+                                       <a href="/adminAuditoria"> Auditoría</a>
+                                    </li>
+                                    <li>
+                                        <a href="/adminErrores"> Log Errores</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <% } %>
+
+                                <% if(username.nombreRol === 'Consultor') { %>
+                                    <li class="active">
+                                        <a href="/adminIndex"><i class="fa fa-area-chart"></i> <span class="nav-label">Dashboard</span></a>
+                                    </li>
+                                    <% } %>
+                    </ul>
+
+                </div>
+            </nav>
+
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                            <div role="search" class="navbar-form-custom">
+                                <div class="form-group">
+                                    <input type="text" value="<%= username.nombreCentral %>" class="form-control" name="top-search" id="top-search" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li>
+                                <span class="m-r-sm text-muted welcome-message" style="text-transform: uppercase; font-weight: bold;"><%= username.nombreUsuario %> Bienvenido a Loctel</span>
+                            </li>
+                            <li>
+                                <a href="/logout"><i class="fa fa-sign-out"></i> Cerrar Sesión</a>
+                            </li>
+                        </ul>
+
+                    </nav>
+                </div>
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <div class="col-sm-4">
+                        <h2>Consultas CRM</h2>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a>Administrador</a>
+                            </li>
+                            <li class="active">
+                                <strong>Consultas CRM</strong>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="wrapper wrapper-content  animated fadeInRight">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Gestión Consultas</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mdBusquedas"><i class="fa fa-filter"></i> INSERTAR FILTROS</button>
+                                    <br><br>
+                                    <div class="table-responsive" id="tableDetails">
+                                        <table id="tbDetalles" class="table table-striped table-bordered table-hover">
+                                            <thead>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </thead>
+                                            <tbody>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal inmodal" id="mdBusquedas" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <i class="fa fa-search modal-icon"></i>
+                        <h4 class="modal-title">Filtros de Búsqueda</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Marca Central Telefónica</label>
+                            <select class="form-control m-b" name="cbxMarcaCentral" id="cbxMarcaCentral"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Modelo Central Telefónica</label>
+                            <select class="form-control m-b" name="cbxModeloCentral" id="cbxModeloCentral"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Departamentos</label>
+                            <select class="form-control m-b" name="cbxDepartamento" id="cbxDepartamento"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Extensiones</label>
+                            <select class="form-control m-b" id="cbxExtensiones" name="cbxExtensiones" multiple="multiple" style="height: 34px"></select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal" style="width: 150px"><i class="fa fa-times"></i> CANCELAR</button>
+                        <button class="ladda-button btn btn-warning" data-style="expand-right" type="button" id="btnPDF" style="width: 150px"><i class="fa fa-file"></i> REPORTE</button>
+                        <button class="ladda-button btn btn-success" data-style="expand-right" type="button" id="btnBuscar" style="width: 150px"><i class="fa fa-search"></i> BUSCAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mainly scripts -->
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+        <!-- Custom and plugin javascript -->
+        <script src="js/inspinia.js"></script>
+        <script src="js/plugins/pace/pace.min.js"></script>
+
+        <script src="js/plugins/dataTables/datatables.min.js"></script>
+
+        <script src="js/plugins/ladda/spin.min.js"></script>
+        <script src="js/plugins/ladda/ladda.min.js"></script>
+        <script src="js/plugins/ladda/ladda.jquery.min.js"></script>
+
+        <script src="js/bootstrap-multiselect.js" type="text/javascript"></script>
+
+
+        <script>
+            BuscarCentralMarca();
+
+            $('#cbxMarcaCentral').click(function (event) {
+                var marca_central = $('#cbxMarcaCentral').val();
+                BuscarCentralModelo(marca_central);
+            });
+
+            $('#cbxModeloCentral').click(function (event) {
+                var modelo_central = $('#cbxModeloCentral').val();
+                BuscarDepartamentos(modelo_central);
+            });
+
+            $('#cbxDepartamento').click(function (event) {
+                var departamento = $('#cbxDepartamento').val();
+                BuscarExtensiones(departamento);
+            });
+
+            $('#btnBuscar').click(function (event) {
+
+                var selected = $("#cbxExtensiones option:selected");
+                var concat = "";
+                var extensiones = "";
+
+                selected.each(function () {
+                    concat += "extension.ext_id = \\'" + $(this).val() + "\\' OR ";
+                });
+
+                extensiones = concat.substring(0, (concat.length - 3));
+
+                BuscarAsignacionLlamads(extensiones);
+            });
+
+            function BuscarCentralMarca() {
+
+                $.ajax({
+                    type: "GET",
+                    url: "/BuscarMarcaCentralConsultasCrm",
+                    success: function (responseText) {
+                        var htmlOut = '';
+                        for (var i = 0; i < responseText.length; i++) {
+                            htmlOut += "<option value=\"" + responseText[i].mar_id + "\">" + responseText[i].mar_nombre + "</option>\n"
+                        }
+                        $('#cbxModeloCentral').empty();
+                        $('#cbxDepartamento').empty();
+                        $('#cbxExtensiones').empty();
+                        $('#cbxExtensiones').multiselect('destroy');
+
+                        $('#cbxMarcaCentral').empty();
+                        $('#cbxMarcaCentral').append(htmlOut);
+                    }
+                });
+            }
+
+            function BuscarCentralModelo(marca_central) {
+
+                $.ajax({
+                    type: "GET",
+                    url: "/BuscarModeloCentralConsultasCrm",
+                    data: { marca_central: marca_central },
+                    success: function (responseText) {
+                        var htmlOut = '';
+                        for (var i = 0; i < responseText.length; i++) {
+                            htmlOut += "<option value=\"" + responseText[i].cen_id + "\">" + responseText[i].cen_nombre + "</option>\n"
+                        }
+                        $('#cbxExtensiones').empty();
+                        $('#cbxExtensiones').multiselect('destroy');
+                        $('#cbxDepartamento').empty();
+
+                        $('#cbxModeloCentral').empty();
+                        $('#cbxModeloCentral').append(htmlOut);
+                    }
+                });
+            }
+
+            function BuscarDepartamentos(modelo_central) {
+
+                $.ajax({
+                    type: "GET",
+                    url: "/BuscarDepartamentoConsultasCrm",
+                    data: { modelo_central: modelo_central },
+                    success: function (responseText) {
+                        var htmlOut = '';
+                        for (var i = 0; i < responseText.length; i++) {
+                            htmlOut += "<option value=\"" + responseText[i].dep_id + "\">" + responseText[i].dep_nombre + "</option>\n"
+                        }
+                        $('#cbxExtensiones').empty();
+                        $('#cbxExtensiones').multiselect('destroy');
+
+                        $('#cbxDepartamento').empty();
+                        $('#cbxDepartamento').append(htmlOut);
+                    }
+                });
+            }
+
+            function BuscarExtensiones(departamento) {
+                $.ajax({
+                    type: "GET",
+                    url: "/BuscarExtensionConsultasCrm",
+                    data: { departamento: departamento },
+                    success: function (responseText) {
+                        var htmlOut = '';
+                        for (var i = 0; i < responseText.length; i++) {
+                            htmlOut += "<option value='" + responseText[i].ext_id + "'>" + responseText[i].ext_nombre + "  " + responseText[i].ext_numero + "</option>\n";
+                        }
+
+                        $('#cbxExtensiones').empty();
+                        $('#cbxExtensiones').append(htmlOut);
+
+                        $('#cbxExtensiones').multiselect('destroy');
+                        $('#cbxExtensiones').multiselect({
+                            includeSelectAllOption: true,
+                            enableFiltering: true,
+                            buttonWidth: '100%',
+                            maxHeight: 200
+                        });
+                    }
+                });
+            }
+
+            function BuscarAsignacionLlamads(extensiones) {
+                var l = $('.ladda-button').ladda();
+                l.ladda('start');
+
+                $.ajax({
+                    type: "GET",
+                    url: "/BuscarLlamadasAsignacionConsultasCrm",
+                    data: { extensiones: extensiones },
+                    success: function (responseText) {
+
+                        var table = $('#tbDetalles').DataTable();
+                        table.destroy();
+                        $('#tbDetalles').empty();
+
+                        table = $('#tbDetalles').DataTable({
+                            "ordering": false,
+                            pageLength: 10,
+                            responsive: true,
+                            dom: '<"html5buttons"B>lTfgitp',
+                            buttons: [
+                                { extend: 'csv', className: 'exportar-csv-e' },
+                                { extend: 'excel', title: 'asignacion-search-excel', className: 'exportar-excel-e' },
+                                {
+                                    text: '<i class=\'fa fa-refresh\'><i>',
+                                    action: function (e, dt, node, config) {
+                                        location.reload();
+                                    }
+                                }
+                            ],
+                            data: responseText[0],
+                            columns: [
+                                { data: 'ext_nombre', title: "Extensión" },
+                                { data: 'departamento', title: "Departamento" },
+                                { data: 'asig_apellidos', title: "A. Apellido" },
+                                { data: 'asig_nombre', title: "A. Nombre" },
+                                { data: 'asig_direccion', title: "A. Dirección" },
+                                { data: 'asig_poblacion', title: "A. Población" },
+                                { data: 'asig_telefono', title: "A. Teléfono" },
+                                { data: 'asig_email', title: "A. Email" },
+                                { data: 'asig_genero', title: "A. Género" },
+                                { data: 'asig_ingresos', title: "A. Ingresos" },
+                                { data: 'asig_descripcion', title: "A. Descripción" },
+                                { data: 'asig_comentario', title: "A. Comentario" },
+                                { data: 'asig_estado', title: "A. Estado" }
+                            ],
+                            "columnDefs": [
+                                { "visible": false, "targets": 0 },
+                                {
+                                    "targets": [1, 4, 5, 7, 8, 9],
+                                    "visible": false,
+                                    "searchable": false
+                                }],
+                            "order": [[0, 'asc']],
+                            "drawCallback": function (settings) {
+                                var api = this.api();
+                                var rows = api.rows({ page: 'current' }).nodes();
+                                var last = null;
+
+                                api.column(0, { page: 'current' }).data().each(function (group, i) {
+                                    if (last !== group) {
+                                        $(rows).eq(i).before(
+                                            '<tr class="group" style="background: #1AB394; color: white"><td colspan="10"><i class="fa fa-user"></i> <b>Extensión - ' + group + '</b></td></tr>'
+                                        );
+
+                                        last = group;
+                                    }
+                                });
+                            },
+                            "language": {
+                                "sProcessing": "Procesando...",
+                                "sLengthMenu": "Mostrar _MENU_ registros",
+                                "sZeroRecords": "No se encontraron resultados",
+                                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                "sInfoPostFix": "",
+                                "sSearch": "",
+                                "sUrl": "",
+                                "sInfoThousands": ",",
+                                "sLoadingRecords": "Cargando...",
+                                "oPaginate": {
+                                    "sFirst": "Primero",
+                                    "sLast": "Último",
+                                    "sNext": "Siguiente",
+                                    "sPrevious": "Anterior"
+                                },
+                                "oAria": {
+                                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                },
+                                searchPlaceholder: "Buscar datos"
+                            }
+                        });
+
+                        l.ladda('stop');
+
+                        $('#mdBusquedas').modal('toggle');
+                    }
+                });
+            }
+        </script>
+
+<script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+<script src="js/timeOut/timeOut.js"></script>
+        <%  } else{ %>
+            <script>
+                location.replace('/inicio');
+            </script>
+            <% } %>
+
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loctel | Cineto Telecomunicaciones</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg" onload="nobackbutton();">
+
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <div>
+                <br>
+                <br>
+                <br>
+                <img src="../img/logo.png" alt="Loctel" width="100%">
+            </div>
+            <h3>Crear Cuenta</h3>
+            <form class="m-t" role="form" action="/registro" method="POST" id="fmrRegistrar">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Usuario" id="txtUsuario" name="txtUsuario" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Contraseña" id="txtPassword" name="txtPassword" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary block full-width m-b" id="btnRegistrar"> Registrar</button>
+            </form>
+
+            <p class="text-muted text-center">
+                <small>¿Ya tienes Cuenta?</small>
+            </p>
+            <a class="btn btn-sm btn-white btn-block" href="/inicio">Ingresar</a>
+
+            <p class="m-t">
+                <small>Loctel &copy; Desarrollado por Cineto Telecomunicaciones - 2017</small>
+            </p>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script src="js/plugins/toastr/toastr.min.js"></script>
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
+    <script type="text/javascript">
+        ComprobarLicenciaLocal();
+        $(function () {
+
+            $('#btnRegistrar').click(function (e) {
+
+                if ($('#fmrRegistrar').valid()) {
+
+                    e.preventDefault();
+                    var data = $('#fmrRegistrar').serialize();
+
+                    $.post("/registro", data, function (res, est, jqXHR) {
+
+                        if (res[0].msm === 'El Usuario que intenta Registrar ya Existe') {
+                            toastr.error(res[0].msm, 'Gestión Usuarios');
+                        } else {
+                            toastr.success(res[0].msm, 'Gestión Usuarios');
+                            document.getElementById('fmrRegistrar').reset();
+                        }
+
+                    });
+                }
+
+            });
+        });
+
+        $.extend($.validator.messages, {
+            required: "Este campo es obligatorio.",
+            remote: "Por favor, rellena este campo.",
+            email: "Por favor, escribe una dirección de correo válida.",
+            url: "Por favor, escribe una URL válida.",
+            date: "Por favor, escribe una fecha válida.",
+            dateISO: "Por favor, escribe una fecha (ISO) válida.",
+            number: "Por favor, escribe un número válido.",
+            digits: "Por favor, escribe sólo dígitos.",
+            creditcard: "Por favor, escribe un número de tarjeta válido.",
+            equalTo: "Por favor, escribe el mismo valor de nuevo.",
+            extension: "Por favor, escribe un valor con una extensión aceptada.",
+            maxlength: $.validator.format("Por favor, no escribas más de {0} caracteres."),
+            minlength: $.validator.format("Por favor, no escribas menos de {0} caracteres."),
+            rangelength: $.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
+            range: $.validator.format("Por favor, escribe un valor entre {0} y {1}."),
+            max: $.validator.format("Por favor, escribe un valor menor o igual a {0}."),
+            min: $.validator.format("Por favor, escribe un valor mayor o igual a {0}."),
+            nifES: "Por favor, escribe un NIF válido.",
+            nieES: "Por favor, escribe un NIE válido.",
+            cifES: "Por favor, escribe un CIF válido."
+        });
+
+
+        function ComprobarLicenciaAPI(serial) {
+            $.ajax({
+                type: 'GET',
+                url: '/ComprobarLicenciaAPI',
+                data: { serial: serial },
+                success: function (data) {
+                    if (data[0].msm == 'false') {
+                        location.replace('/');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('ERROR API:' + xhr + ajaxOptions + thrownError);
+                }
+            });
+        }
+
+        function ComprobarLicenciaLocal() {
+            $.ajax({
+                type: 'GET',
+                url: '/BuscarLicenciaDB',
+                success: function (data) {
+                    if (data[0].msm != 'VACIO') {
+                        ComprobarLicenciaAPI(data[0].msm);
+                    } else {
+                        location.replace('/');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('ERROR LOCAL:' + xhr + ajaxOptions + thrownError);
+                }
+            });
+        }
+
+    </script>
+
+    <script>
+        function nobackbutton() {
+            window.location.hash = "no-back-button";
+            window.location.hash = "Again-No-back-button" //chrome
+            window.onhashchange = function () {
+                window.location.hash = "no-back-button";
+            };
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loctel | Cineto Telecomunicaciones</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet">
+    <style>
+        #div1 {
+            overflow-y: scroll;
+            height: 250px;
+        }
+    </style>
+</head>
+
+<body class="">
+
+    <% if (isAuthenticated) { %>
+
+        <div id="wrapper">
+
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav metismenu" id="side-menu">
+                        <li class="nav-header">
+                            <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-rounded" src="img/user.png" />
+                             </span>
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold" style="text-transform: uppercase;"><%= username.nombreUsuario %></strong>
+                             </span> <span class="text-muted text-xs block"><%= username.nombreRol %> <b class="caret"></b></span> </span> </a>
+                                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                    <li><a href="">Perfil</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/logout">Cerrar Sesión</a></li>
+                                </ul>
+                            </div>
+                            <div class="logo-element">
+                                LT+
+                            </div>
+                        </li>
+                        <% if(username.nombreRol === 'Administrador') { %>
+                            <li class="active">
+                                <a href="/adminIndex"><i class="fa fa-area-chart"></i> <span class="nav-label">Dashboard</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li><a href="/adminIndex">Inicio</a></li>
+                                    <li class="active"><a href="/adminEstadisticasGrand?central=GRANDSTREAM">Estadísticas GRANDSTREAM</a></li>
+                                    <li><a href="/adminBusquedasGrand?central=GRANDSTREAM">Búsquedas GRANDSTREAM</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/adminEmpresa"><i class="fa fa-bank"></i> <span class="nav-label">Empresa</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminCentral"><i class="fa fa-phone"></i> <span class="nav-label">Central Telefónica</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li><a href="/adminCentral">Modelo Central Telefónica</a></li>
+                                    <li><a href="/adminCentralCampos"> Campos Central Telefónica</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/adminDepartamento"><i class="fa fa-diamond"></i> <span class="nav-label">Departamentos</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminAgentes"><i class="fa fa-headphones"></i> <span class="nav-label">Agentes</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminSeries"><i class="fa fa-sort-numeric-asc"></i> <span class="nav-label">Series Numéricas</span></a>
+                            </li>
+                            <li>
+                                <a href="/adminUsuarios"><i class="fa fa-group"></i> <span class="nav-label">Usuarios</span></a>
+                            </li>
+                            <li>
+                                    <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">CRM</span> <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-second-level">
+                                        <!--<li><a href="/adminCrmCreacionCampos"> Campos</a></li>-->
+                                        <li><a href="/adminCrmInformacion"> Información</a></li>
+                                        <li><a href="/adminCrmAsignacion"> Asignación</a></li>
+                                        <li><a href="/adminCrmConsultas"> Consultas</a></li>
+                                        <li>
+                                            <a href="/adminCrmUsuarios"> Usuarios</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <i class="fa fa-eye"></i>
+                                        <span class="nav-label">Administración</span>
+                                        <span class="fa arrow"></span>
+                                    </a>
+                                    <ul class="nav nav-second-level">
+                                        <li >
+                                           <a href="/adminAuditoria"> Auditoría</a>
+                                        </li>
+                                        <li>
+                                            <a href="/adminErrores"> Log Errores</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            <% } %>
+
+                                <% if(username.nombreRol === 'Consultor') { %>
+                                    <li class="active">
+                                        <a href="/adminIndex"><i class="fa fa-area-chart"></i> <span class="nav-label">Dashboard</span> <span class="fa arrow"></span></a>
+                                        <ul class="nav nav-second-level">
+                                            <li><a href="/adminIndex">Inicio</a></li>
+                                            <li class="active"><a href="/adminEstadisticasGrand?central=GRANDSTREAM">Estadísticas GRANDSTREAM</a></li>
+                                            <li><a href="/adminBusquedasGrand?central=GRANDSTREAM">Búsquedas GRANDSTREAM</a></li>
+                                        </ul>
+                                    </li>
+                                    <% } %>
+                    </ul>
+
+                </div>
+            </nav>
+
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                            <div role="search" class="navbar-form-custom">
+                                <div class="form-group">
+                                    <input type="text" value="<%= username.nombreCentral %>" class="form-control" name="top-search" id="top-search" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li>
+                                <span class="m-r-sm text-muted welcome-message" style="text-transform: uppercase; font-weight: bold;"><%= username.nombreUsuario %> Bienvenido a Loctel</span>
+                            </li>
+                            <li>
+                                <a href="/logout"><i class="fa fa-sign-out"></i> Cerrar Sesión</a>
+                            </li>
+                        </ul>
+
+                    </nav>
+                </div>
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <div class="col-sm-4">
+                        <h2>Estadísticas Globales</h2>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a>Administrador</a>
+                            </li>
+                            <li class="active">
+                                <strong>Estadísticas - GRANDSTREAM</strong>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <select class="form-control m-b" name="modelo_central" id="modelo_central">
+                                        <% modeloCentral.forEach(function(modeloCentral) { %>
+                                            <option value="<%= modeloCentral.cen_nombre %>"><%= modeloCentral.cen_nombre %></option>
+                                        <% }); %>
+                            </select>
+                        </div>
+                        <div id="resumen">
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Número de llamadas | ANUAL</h5>
+                                    <div class="pull-right">
+                                        <div class="btn-group">
+                                            <label class="label label-xs" style="background: white">Seleccionar Año</label>
+                                            <select class="btn btn-xs btn-white" name="anio_busqueda" id="anio_busqueda">
+                                                    <% aniosBusqueda.forEach(function(aniosBusqueda) { %>
+                                                        <option value="<%= aniosBusqueda.anio %>"><%= aniosBusqueda.anio %></option>
+                                                    <% }); %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ibox-content">
+
+                                    <div id="chartContenedor" style="width: 100%;">
+                                        <canvas id="barChart"></canvas>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Tipo Llamadas Global</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <ul class="stat-list" id="tipo">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+
+        <!-- Mainly scripts -->
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+        <script src="js/plugins/dataTables/datatables.min.js"></script>
+        <!-- Custom and plugin javascript -->
+        <script src="js/inspinia.js"></script>
+        <script src="js/plugins/pace/pace.min.js"></script>
+        <script src="js/plugins/chartJs/Chart.min.js"></script>
+        <script src="js/plugins/toastr/toastr.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                var modelo_central = $('#modelo_central').val();
+                var anio_busqueda = $('#anio_busqueda').val();
+                BuscarResumen(modelo_central);
+                BuscarTipo(modelo_central);
+                BuscarMensual(modelo_central, anio_busqueda);
+            });
+
+            $('#anio_busqueda').change(function (event) {
+                var modelo_central = $('#modelo_central').val();
+                var anio_busqueda = $('#anio_busqueda').val();
+                BuscarMensual(modelo_central, anio_busqueda);
+            });
+
+            $('#modelo_central').change(function (event) {
+                var modelo_central = $('#modelo_central').val();
+                var anio_busqueda = $('#anio_busqueda').val();
+                BuscarResumen(modelo_central);
+                BuscarTipo(modelo_central);
+                BuscarMensual(modelo_central, anio_busqueda);
+            });
+
+            function BuscarResumen(central) {
+                $.ajax({
+                    type: "GET",
+                    url: "/ResumenGlobalLlamadasGrand",
+                    data: { modelo_central: central },
+                    success: function (responseText) {
+
+                        var htmlOut = "";
+                        htmlOut = "<div class='col-lg-3'>" +
+                            "<div class='ibox float-e-margins'>" +
+                            "<div class='ibox-title'>" +
+                            "<span class='label label-danger pull-right'>Llamada</span>" +
+                            "<h5>Mínimo Tiempo</h5>" +
+                            "</div>" +
+                            "<div class='ibox-content'>" +
+                            "<h1 class='no-margins'>" + responseText[0][0].minimo_tiempo_llamada + "</h1>" +
+                            "<div class='stat-percent font-bold text-danger'><i class='fa fa-level-down'></i></div>" +
+                            "<small>Total</small>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "<div class='col-lg-3'>" +
+                            "<div class='ibox float-e-margins'>" +
+                            "<div class='ibox-title'>" +
+                            " <span class='label label-success pull-right'>Llamada</span>" +
+                            "<h5>Máximo Tiempo</h5>" +
+                            "</div>" +
+                            "<div class='ibox-content'>" +
+                            "<h1 class='no-margins'>" + responseText[0][0].maximo_tiempo_llamada + "</h1>" +
+                            "<div class='stat-percent font-bold text-success'><i class='fa fa-level-up'></i></div>" +
+                            "<small>Total</small>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "<div class='col-lg-3'>" +
+                            "<div class='ibox float-e-margins'>" +
+                            "<div class='ibox-title'>" +
+                            "<span class='label label-primary pull-right'>Llamadas</span>" +
+                            "<h5>Total Tiempo</h5>" +
+                            "</div>" +
+                            "<div class='ibox-content'>" +
+                            "<h1 class='no-margins'>" + responseText[0][0].total_tiempo_llamada + "</h1>" +
+                            "<div class='stat-percent font-bold text-navy'><i class='fa fa-phone'></i></div>" +
+                            "<small>Total</small>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "<div class='col-lg-3'>" +
+                            "<div class='ibox float-e-margins'>" +
+                            "<div class='ibox-title'>" +
+                            "<span class='label label-warning pull-right'>Llamadas</span>" +
+                            "<h5>Promedio Tiempo</h5>" +
+                            "</div>" +
+                            "<div class='ibox-content'>" +
+                            "<h1 class='no-margins'>" + responseText[0][0].promedio_tiempo_llamada + "</h1>" +
+                            "<div class='stat-percent font-bold text-warning'><i class='fa fa-exchange'></i></div>" +
+                            "<small>Total</small>" +
+                            "</div>" +
+                            "</div>" +
+                            " </div>";
+
+
+                        $('#resumen').empty();
+                        $('#resumen').append(htmlOut);
+                    }
+                });
+            }
+
+            function BuscarMensual(central, anio) {
+                $.ajax({
+                    type: "GET",
+                    url: "/TiempoGlobalLlamadasGrand",
+                    data: { modelo_central: central, anio_busqueda: anio },
+                    success: function (responseText) {
+
+                        var labels = new Array();
+                        var values = new Array();
+
+                        for (var i = 0; i < responseText[0].length; i++) {
+                            labels.push(responseText[0][i].meses);
+                            values.push(responseText[0][i].duracion);
+                        }
+                        var barData = {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: "",
+                                    backgroundColor: 'rgba(26,179,148,2.5)',
+                                    borderColor: "#1A987E",
+                                    borderWidth: 3,
+                                    data: values
+                                }
+                            ]
+                        };
+
+                        var barOptions = {
+                            responsive: true,
+                        };
+
+                        var myNewChart1;
+
+                        if (window.myNewChart1 != null) {
+                            window.myNewChart1.destroy();
+                        }
+
+                        var ctx1 = document.getElementById("barChart").getContext("2d");
+                        window.myNewChart1 = new Chart(ctx1, { type: 'bar', data: barData, options: barOptions });
+
+                    }
+                });
+            }
+
+            function BuscarTipo(central) {
+                $.ajax({
+                    type: "GET",
+                    url: "/TipoGlobalLlamadasGrand",
+                    data: { modelo_central: central },
+                    success: function (responseText) {
+
+                        var htmlOut = "";
+                        var suma = 0;
+                        for (var i = 0; i < responseText[0].length; i++) {
+                            suma += responseText[0][i].total_llamada;
+                        }
+                        for (var i = 0; i < responseText[0].length; i++) {
+
+                            var porcentaje = (responseText[0][i].total_llamada * 100) / suma;
+                            htmlOut += "<li>\n" +
+                                "<h2 class='no-margins'>" + responseText[0][i].total_llamada + "</h2>\n" +
+                                "<p><b>" + responseText[0][i].tipo_llamada + "</b></p>\n" +
+                                "<div class='stat-percent'>" + Math.round(porcentaje) + "% <i class='fa fa-level-up text-navy'></i></div>\n" +
+                                "<div class='progress progress-mini'>\n" +
+                                "<div style='width: " + Math.round(porcentaje) + "%;' class='progress-bar'></div>\n" +
+                                "</div>\n" +
+                                "</li>\n";
+
+                        }
+                        $('#tipo').empty();
+                        $('#tipo').append(htmlOut);
+                    }
+                });
+            }
+        </script>
+        <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+        <script src="js/timeOut/timeOut.js"></script>
+        <%  } else{ %>
+            <script>
+                location.replace('/inicio');
+            </script>
+            <% } %>
+
+</body>
+
+</html>
